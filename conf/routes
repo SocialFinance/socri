@@ -5,6 +5,10 @@
 # Home page
 GET     /                           controllers.Application.index()
 
+POST    /task                       controllers.Application.addTask()
+
+GET     /tasks                      controllers.Application.getTasks()
+
 GET		/foo						controllers.Foo.get
 
 # Map static resources from the /public folder to the /assets URL path
