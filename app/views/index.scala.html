@@ -14,7 +14,7 @@
     <div class="container">
         <ul id="tasks"></ul>
 
-        @helper.form(action = routes.Application.addTask(), 'class -> "well form-horizontal") {
+        @helper.form(action = routes.Application.addTask(), 'class -> "well form-horizontal", 'foo -> "dont do that") {
             @helper.inputText(taskForm("contents"), '_label -> "Contents")
             <div class="controls">
                 <input type="submit" class="btn btn-primary"/>
