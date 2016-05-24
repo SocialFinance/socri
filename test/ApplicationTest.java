@@ -28,7 +28,7 @@ import static org.fest.assertions.Assertions.*;
 */
 public class ApplicationTest {
 
-    public static String MSG = "HELLO, WORLD!";
+    public static String MSG = "HELLO, WORLD";
 
     @Test
     public void simpleCheck() {
@@ -38,7 +38,8 @@ public class ApplicationTest {
 
     @Test
     public void renderTemplate() {
-        Content html = views.html.index.render(MSG);
+        Content html = views.html.index.render("HELLO, WORLD", play.data.Form.form(models.Task.class));
+//        Content html = views.html.index.render(MSG);
         assertThat(contentType(html)).isEqualTo("text/html");
         assertThat(contentAsString(html)).contains(MSG);
     }

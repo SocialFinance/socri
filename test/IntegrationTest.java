@@ -11,7 +11,7 @@ import static org.fluentlenium.core.filter.FilterConstructor.*;
 
 public class IntegrationTest {
 
-    public static String MSG = "HELLO, WORLD!";
+    public static String MSG = "HELLO, WORLD";
 
     /**
      * add your integration test here
