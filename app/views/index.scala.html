@@ -1,25 +1,13 @@
-@(message: String, taskForm: Form[Task])
-@implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
+@(message: Message, user: User)
 
-@main("Welcome to Play 2.0") {
+@main("Boop", message, user) {
+    @if(user == null) {
+        <h2>I should really put something here. You need to login or signup.</h2>
+    } else {
+        <h1>Welcome, @user.alias</h1>
+    }
 
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a id="titleLink" class="brand" href="/">@message.toUpperCase</a>
-            </div>
-        </div>
+    <div class="well">
+        Boop.
     </div>
-
-    <div class="container">
-        <ul id="tasks"></ul>
-
-        @helper.form(action = routes.Application.addTask(), 'class -> "well form-horizontal", 'foo -> "dont do that") {
-            @helper.inputText(taskForm("contents"), '_label -> "Contents")
-            <div class="controls">
-                <input type="submit" class="btn btn-primary"/>
-            </div>
-        }
-    </div>
-
 }

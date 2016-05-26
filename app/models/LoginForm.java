@@ -16,5 +16,4 @@ public class LoginForm extends Model {
 
     @play.data.validation.Constraints.Required
     public String password;
-
 }

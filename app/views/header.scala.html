@@ -1,0 +1,15 @@
+@(user: User)
+
+<nav class="navbar navbar-fixed-top navbar-default bg-faded">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">SoCri</a>
+        <ul class="nav navbar-nav navbar-right">
+            @if(user == null) {
+                <li><a href="@routes.Signup.get()">Signup</a></li>
+                <li><a href="@routes.Auth.get()">Login</a></li>
+            } else {
+                <li><a href="@routes.Auth.logout()">Logout</a></li>
+            }
+        </ul>
+    </div>
+</nav>
