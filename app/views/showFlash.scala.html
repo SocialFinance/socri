@@ -1,11 +1,11 @@
 @if(flash.containsKey("success")) {
-    <span class="center-block alert alert-success">@flash.get("success")</span>
+    <span class="flash-alert center-block alert alert-success">@flash.get("success")</span>
 } else {
     @if(flash.containsKey("error")) {
-        <span class="center-block alert alert-danger"><strong>Yea. No.</strong> @flash.get("error")</span>
+        <span class="flash-alert center-block alert alert-danger"><strong>Yea. No.</strong><br> @flash.get("error")</span>
     } else {
         @if(flash.containsKey("info")) {
-            <span class="center-block alert alert-primary">@flash.get("info")</span>
+            <span class="flash-alert center-block alert alert-primary">@flash.get("info")</span>
         }
     }
 }

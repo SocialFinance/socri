@@ -8,17 +8,13 @@ import models.Message.*;
 import models.*;
 
 public class Index extends Controller {
-    public static Result index() {
 
+    public static Result index() {
         User user = User.getConnectedUser(session());
         if(user != null) {
             return ok(index.render(user));
         } else {
-            return ok(test.render());
+            return ok(test.render(user));
         }
-    }
-
-    public static Result test() {
-        return ok(test.render());
     }
 }

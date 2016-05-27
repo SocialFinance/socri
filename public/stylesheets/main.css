@@ -1,11 +1,9 @@
 body {
-    padding-top: 50px;
+    margin-top: 50px;
 }
-
-body .container {
-    padding-top: 50px;
+.flash-alert {
+    margin-top: 20px;
 }
-
 .form-signup {
     max-width: 500px;
     padding: 15px;
