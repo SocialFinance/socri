@@ -1,7 +1,7 @@
-@(message: Message, loginForm: Form[LoginForm])
+@(loginForm: Form[LoginForm])
 @implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
 
-@main("Auth", message, null) {
+@main("Auth", null) {
     <div id="login" class="container">
         @helper.form(action = routes.Auth.login(), 'class -> "form-signin") {
 

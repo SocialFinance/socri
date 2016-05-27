@@ -1,6 +1,6 @@
-@(message: Message, user: User)
+@(user: User)
 
-@main("Boop", message, user) {
+@main("Boop", user) {
     @if(user == null) {
         <h2>I should really put something here. You need to login or signup.</h2>
     } else {

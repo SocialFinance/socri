@@ -1,4 +1,4 @@
-@(title: String, message: Message, user: User)(content: Html)
+@(title: String, user: User)(content: Html)
 
 <!DOCTYPE html>
 
@@ -15,11 +15,7 @@
     <body>
         @header(user)
         <div class="container">
-            @if(message.show) {
-                <div class="@message.classes">
-                    @Html(message.text)
-                </div>
-            }
+            @showFlash()
             @content
         </div>
     </body>

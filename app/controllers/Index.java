@@ -11,6 +11,6 @@ public class Index extends Controller {
     public static Result index() {
 
         User user = User.getConnectedUser(session());
-        return ok(index.render(new BlankMessage(), user));
+        return ok(index.render(user));
     }
 }

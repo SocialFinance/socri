@@ -2,7 +2,7 @@
 
 <div class="form-group">
     <div class="input-group @if(elements.hasErrors) {has-error}">
-        <span class="input-group-addon">@elements.label</span>
+        <span class="fixed-input-group input-group-addon">@elements.label</span>
         @elements.input
     </div>
     <label class="help-block text-danger" for="@elements.id">@elements.errors.mkString(", ")</label>

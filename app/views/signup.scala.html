@@ -1,7 +1,7 @@
-@(message: Message, signupForm: Form[User])
+@(signupForm: Form[User])
 @implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
 
-@main("Signup", message, null) {
+@main("Signup", null) {
     <div class="container">
     @helper.form(action = routes.Signup.post(), 'class -> "form-signup") {
         <h2 class="form-signin-heading">New Account <small>no welchers!</small></h2>

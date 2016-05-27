@@ -10,17 +10,18 @@ import views.html.*;
 
 import java.util.List;
 
+import static play.mvc.Controller.flash;
 import static play.mvc.Controller.session;
 import static play.mvc.Results.*;
 
 public class Auth {
 
     public static Result get() {
-        return ok(login.render(new BlankMessage(), play.data.Form.form(models.LoginForm.class)));
+        return ok(login.render(play.data.Form.form(models.LoginForm.class)));
     }
 
     public static Result logout() {
-        session().remove("connected");
+        session().clear();
         return redirect(routes.Index.index());
     }
 
@@ -40,14 +41,16 @@ public class Auth {
             }
         }
         if(form.hasErrors()) {
-            return badRequest(login.render(new ErrorMessage("<strong>Auth error.</strong> Get that weak shit out of here"), form));
+            flash("error", "Login error. Get that weak shit outta here.");
+            return badRequest(login.render(form));
         }
 
         if(user != null) {
             session("connected", user.id);
             return redirect(routes.Index.index());
         } else {
-            return internalServerError(login.render(new ErrorMessage("<strong>OH SHIT!</strong> Something broke down here somewhere. Try that again if you want."), form));
+            flash("error", "OH SHIT! Something broke on our side. Try that again if you want.");
+            return internalServerError(login.render(form));
         }
     }
 }
