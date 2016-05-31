@@ -1,50 +1,57 @@
 package controllers;
 
-import models.LoginForm;
+import forms.LoginForm;
 import models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import play.data.Form;
 import play.mvc.Result;
-import views.html.*;
-
-import java.util.List;
+import services.UserService;
+import views.html.login;
 
 import static play.mvc.Controller.flash;
 import static play.mvc.Controller.session;
-import static play.mvc.Results.*;
+import static play.mvc.Results.badRequest;
+import static play.mvc.Results.internalServerError;
+import static play.mvc.Results.ok;
+import static play.mvc.Results.redirect;
 
+@Controller
 public class Auth {
 
-    public static Result get() {
-        return ok(login.render(play.data.Form.form(models.LoginForm.class)));
+    @Autowired
+    private UserService userService;
+
+    public Result get() {
+        return ok(login.render(play.data.Form.form(LoginForm.class)));
     }
 
-    public static Result logout() {
+    public Result logout() {
         session().clear();
         return redirect(routes.Index.get());
     }
 
-    public static Result login() {
+    public Result login() {
 
         User user = null;
-        Form<models.LoginForm> form = Form.form(LoginForm.class).bindFromRequest();
+        Form<LoginForm> form = Form.form(LoginForm.class).bindFromRequest();
         if (!form.hasErrors()) {
-            List<User> hits = models.User.findByUsername(form.get().username);
-            if(hits.isEmpty()) {
+            user = userService.getByUsername(form.get().username);
+            if (user == null) {
                 form.reject("username", "Nooooope");
             } else {
-                user = hits.get(0);
-                if(!user.password.equals(form.get().password)) {
+                if (!userService.checkPassword(user.getId(), form.get().password)) {
                     form.reject("password", "Nope on a rope");
                 }
             }
         }
-        if(form.hasErrors()) {
+        if (form.hasErrors()) {
             flash("error", "Login error. Get that weak shit outta here.");
             return badRequest(login.render(form));
         }
 
-        if(user != null) {
-            session("connected", user.id);
+        if (user != null) {
+            session("connected", "" + user.getId());
             return redirect(routes.Index.get());
         } else {
             flash("error", "OH SHIT! Something broke on our side. Try that again if you want.");

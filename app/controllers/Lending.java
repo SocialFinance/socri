@@ -1,29 +1,32 @@
 package controllers;
 
-import models.Loan;
 import models.User;
-import play.libs.Json;
+import org.springframework.beans.factory.annotation.Autowired;
 import play.mvc.Controller;
 import play.mvc.Result;
+import services.UserService;
 import views.html.index;
 import views.html.test;
 
-import java.util.List;
-
+@org.springframework.stereotype.Controller
 public class Lending extends Controller {
 
-    public static Result get() {
-        User user = User.getConnectedUser(session());
+    @Autowired
+    private UserService userService;
 
-        if(user != null) {
+    public Result get() {
+        User user = userService.getConnected(session());
+
+        if (user != null) {
             return ok(index.render(user));
         } else {
             return ok(test.render(user));
         }
     }
 
-    public static Result getLoans() {
-        User user = User.getConnectedUser(session());
-        return ok(Json.toJson(models.Loan.allForUser(user.id)));
+    public Result getLoans() {
+        User user = userService.getConnected(session());
+//        return ok(Json.toJson(models.Loan.allForUser(user.id)));
+        return ok(test.render(null));
     }
 }

@@ -1,9 +1,12 @@
 package controllers;
 
-import models.LoginForm;
+import forms.LoginForm;
 import models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import play.data.Form;
 import play.mvc.Result;
+import services.UserService;
 import views.html.login;
 import views.html.signup;
 
@@ -11,13 +14,17 @@ import static play.mvc.Controller.flash;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
 
+@Controller
 public class Signup {
 
-    public static Result get() {
+    @Autowired
+    private UserService userService;
+
+    public Result get() {
         return ok(signup.render(Form.form(models.User.class)));
     }
 
-    public static Result post() {
+    public Result post() {
 
         Form<models.User> form = Form.form(models.User.class).bindFromRequest();
         if (form.hasErrors()) {
@@ -26,9 +33,9 @@ public class Signup {
         }
 
         User newUser = form.get();
-        newUser.save();
+        userService.saveUser(newUser);
 
-        flash("success", "Welcome aboard, "+newUser.alias+". Login to continue.");
+        flash("success", "Welcome aboard, " + newUser.getAlias() + ". Login to continue.");
         return ok(login.render(Form.form(LoginForm.class)));
     }
 }

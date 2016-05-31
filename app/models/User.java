@@ -1,48 +1,81 @@
 package models;
 
-import play.db.ebean.Model;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
-public class User extends Model {
+@Entity(name = "users")
+public class User {
 
     @Id
-    public String id;
+    @GeneratedValue
+    private int id;
 
+    @Column
     @play.data.validation.Constraints.Required
-    public String username;
+    private String username;
 
+    @Column
     @play.data.validation.Constraints.Required
-    public String password;
+    private String password;
 
+    @Column
     @play.data.validation.Constraints.Required
-    public String alias;
+    private String alias;
 
+    @Column
     @play.data.validation.Constraints.Required
-    public String specialties;
+    private String specialties;
 
-    public String weaknesses;
+    @Column
+    private String weaknesses;
 
-    public static Finder<String, User> find = new Model.Finder<>(String.class, User.class);
-
-    public static java.util.List<models.User> findByUsername(String username) {
-        return find.where().like("username", "%"+username+"%").findList();
+    public int getId() {
+        return id;
     }
 
-    public static boolean isUsernameAvailable(String username) {
-        return findByUsername(username).isEmpty();
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public static User getConnectedUser(play.mvc.Http.Session session) {
-        User ret = null;
-        if(session.containsKey("connected")) {
-            ret = User.find.byId(session.get("connected"));
-            if(ret != null) {
-                ret.password = "You can fuck right off";
-            }
-        }
-        return ret;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public String getSpecialties() {
+        return specialties;
+    }
+
+    public void setSpecialties(String specialties) {
+        this.specialties = specialties;
+    }
+
+    public String getWeaknesses() {
+        return weaknesses;
+    }
+
+    public void setWeaknesses(String weaknesses) {
+        this.weaknesses = weaknesses;
     }
 }

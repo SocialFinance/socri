@@ -1,8 +1,11 @@
+@import forms.LoginForm
 @(loginForm: Form[LoginForm])
-@implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
+    @implicitFieldConstructor = @{
+        helper.FieldConstructor(twitterBootstrapInput.render)
+    }
 
-@main("Auth", null) {
-    <div id="login" class="container">
+    @main("Auth", null) {
+        <div id="login" class="container">
         @helper.form(action = routes.Auth.login(), 'class -> "form-signin") {
 
             <h2 class="form-signin-heading">Who dis?</h2>
@@ -12,5 +15,5 @@
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
         }
-    </div>
-}
+        </div>
+    }
