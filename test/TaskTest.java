@@ -1,11 +1,3 @@
-import org.junit.Test;
-
-import static play.test.Helpers.fakeApplication;
-import static play.test.Helpers.running;
-
-import static org.fest.assertions.Assertions.assertThat;
-
-
 public class TaskTest {
 
 //    @Test
@@ -13,7 +5,7 @@ public class TaskTest {
 //        running(fakeApplication(), new Runnable() {
 //            public void run() {
 //                Task task = new Task();
-//                task.contents = "Write a test";
+//                task.contents = "Write a index";
 //                task.save();
 //                assertThat(task.id).isNotNull();
 //            }

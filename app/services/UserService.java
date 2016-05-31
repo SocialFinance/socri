@@ -30,8 +30,8 @@ public class UserService {
 
     public User getConnected(Http.Session session) {
         User ret = null;
-        if (session.containsKey("connected")) {
-            ret = getById(Integer.parseInt(session.get("connected")));
+        if (session.containsKey("userid")) {
+            ret = getById(Integer.parseInt(session.get("userid")));
         }
         return ret;
     }

@@ -1,11 +1,11 @@
 import org.junit.Test;
-
 import play.mvc.Result;
-import play.test.Helpers;
 import play.test.WithApplication;
 
-import static play.test.Helpers.*;
-import static org.fest.assertions.Assertions.*;
+import static org.fest.assertions.Assertions.assertThat;
+import static play.test.Helpers.GET;
+import static play.test.Helpers.fakeRequest;
+import static play.test.Helpers.route;
 
 public class FooTest extends WithApplication {
 

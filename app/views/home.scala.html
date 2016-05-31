@@ -1,0 +1,13 @@
+@(user: User)
+
+    @main("Boop", user) {
+        @if(user == null) {
+            <h2>I should really put something here. You need to login or signup.</h2>
+        } else {
+            <h1>Welcome, @user.getAlias(). Also, @user.getUsername()</h1>
+        }
+
+        <div class="well">
+            Boop.
+        </div>
+    }

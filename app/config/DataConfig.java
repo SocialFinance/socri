@@ -50,6 +50,11 @@ public class DataConfig {
         return dmds;
     }
 
+    @Bean
+    public play.mvc.Security.AuthenticatedAction security$AuthenticatedAction() {
+        return new play.mvc.Security.AuthenticatedAction();
+    }
+
     private String getConfig(String key) {
         return Play.application().configuration().getString(key);
     }

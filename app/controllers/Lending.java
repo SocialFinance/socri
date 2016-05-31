@@ -1,12 +1,11 @@
 package controllers;
 
-import models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import services.UserService;
-import views.html.index;
-import views.html.test;
+import views.html.home;
 
 @org.springframework.stereotype.Controller
 public class Lending extends Controller {
@@ -14,19 +13,15 @@ public class Lending extends Controller {
     @Autowired
     private UserService userService;
 
+    @Security.Authenticated(Secured.class)
     public Result get() {
-        User user = userService.getConnected(session());
-
-        if (user != null) {
-            return ok(index.render(user));
-        } else {
-            return ok(test.render(user));
-        }
+        //TODO
+        return ok(home.render(userService.getConnected(session())));
     }
 
+    @Security.Authenticated(Secured.class)
     public Result getLoans() {
-        User user = userService.getConnected(session());
-//        return ok(Json.toJson(models.Loan.allForUser(user.id)));
-        return ok(test.render(null));
+        //TODO
+        return ok(home.render(userService.getConnected(session())));
     }
 }

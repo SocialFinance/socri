@@ -3,7 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                           @controllers.Index.get()
+GET     /                           @controllers.Index.index()
+GET     /home                       @controllers.Index.home()
 
 GET     /login                      @controllers.Auth.get()
 POST    /login                      @controllers.Auth.login()

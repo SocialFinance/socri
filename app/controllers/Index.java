@@ -1,12 +1,12 @@
 package controllers;
 
-import models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import services.UserService;
+import views.html.home;
 import views.html.index;
-import views.html.test;
 
 @org.springframework.stereotype.Controller
 public class Index extends Controller {
@@ -14,13 +14,13 @@ public class Index extends Controller {
     @Autowired
     private UserService userService;
 
-    public Result get() {
-        User user = userService.getConnected(session());
-        if (user != null) {
-            return ok(index.render(user));
-        } else {
-            return ok(test.render(user));
-        }
+    public Result index() {
+        return ok(index.render(userService.getConnected(session())));
+    }
+
+    @Security.Authenticated(Secured.class)
+    public Result home() {
+        return ok(home.render(userService.getConnected(session())));
     }
 
     public static Result goAway() {

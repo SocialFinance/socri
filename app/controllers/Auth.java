@@ -28,7 +28,7 @@ public class Auth {
 
     public Result logout() {
         session().clear();
-        return redirect(routes.Index.get());
+        return redirect(routes.Index.index());
     }
 
     public Result login() {
@@ -51,8 +51,8 @@ public class Auth {
         }
 
         if (user != null) {
-            session("connected", "" + user.getId());
-            return redirect(routes.Index.get());
+            session("userid", "" + user.getId());
+            return redirect(routes.Index.home());
         } else {
             flash("error", "OH SHIT! Something broke on our side. Try that again if you want.");
             return internalServerError(login.render(form));
