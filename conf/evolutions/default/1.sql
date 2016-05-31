@@ -3,6 +3,16 @@
 
 # --- !Ups
 
+create table loan_form (
+  id                        varchar(255) not null,
+  type                      varchar(255),
+  amount                    double,
+  start                     bigint,
+  end                       bigint,
+  rate                      double,
+  constraint pk_loan_form primary key (id))
+;
+
 create table login_form (
   id                        varchar(255) not null,
   username                  varchar(255),
@@ -34,6 +44,8 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
+create sequence loan_form_seq;
+
 create sequence login_form_seq;
 
 create sequence message_seq;
@@ -49,6 +61,8 @@ create sequence user_seq;
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
+drop table if exists loan_form;
+
 drop table if exists login_form;
 
 drop table if exists message;
@@ -58,6 +72,8 @@ drop table if exists task;
 drop table if exists user;
 
 SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists loan_form_seq;
 
 drop sequence if exists login_form_seq;
 

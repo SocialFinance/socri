@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Index.index()
+GET     /                           controllers.Index.get()
 
 GET     /login                      controllers.Auth.get()
 POST    /login                      controllers.Auth.login()
@@ -12,6 +12,10 @@ POST    /logout                     controllers.Auth.logout()
 
 GET     /signup                     controllers.Signup.get()
 POST    /signup                     controllers.Signup.post()
+
+GET     /jobs                       controllers.Jobs.get()
+GET     /lending                    controllers.Lending.get()
+GET     /social                     controllers.Social.get()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

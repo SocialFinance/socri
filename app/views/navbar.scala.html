@@ -13,6 +13,13 @@
       <a class="navbar-brand topnav" href="/"><span class="label label-default">ಠ_ಠ</span> SoCri</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-left">
+        @if(user != null) {
+            <li><a href="@routes.Jobs.get()">Jobs</a></li>
+            <li><a href="@routes.Lending.get()">Lending</a></li>
+            <li><a href="@routes.Social.get()">Social</a></li>
+        }
+    </ul>
       <ul class="nav navbar-nav navbar-right">
       @if(user == null) {
         <li><a href="@routes.Signup.get()">Signup</a></li>

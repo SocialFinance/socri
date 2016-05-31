@@ -1,8 +1,6 @@
 package controllers;
 
 import models.LoginForm;
-import models.Message.ErrorMessage;
-import models.Message.InfoMessage;
 import models.User;
 import play.data.Form;
 import play.mvc.Result;

@@ -1,8 +1,6 @@
 package controllers;
 
 import models.LoginForm;
-import models.Message.BlankMessage;
-import models.Message.ErrorMessage;
 import models.User;
 import play.data.Form;
 import play.mvc.Result;
@@ -22,7 +20,7 @@ public class Auth {
 
     public static Result logout() {
         session().clear();
-        return redirect(routes.Index.index());
+        return redirect(routes.Index.get());
     }
 
     public static Result login() {
@@ -47,7 +45,7 @@ public class Auth {
 
         if(user != null) {
             session("connected", user.id);
-            return redirect(routes.Index.index());
+            return redirect(routes.Index.get());
         } else {
             flash("error", "OH SHIT! Something broke on our side. Try that again if you want.");
             return internalServerError(login.render(form));

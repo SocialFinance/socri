@@ -25,7 +25,7 @@ public class User extends Model {
 
     public String weaknesses;
 
-    public static Finder<Integer, User> find = new Model.Finder<>(Integer.class, User.class);
+    public static Finder<String, User> find = new Model.Finder<>(String.class, User.class);
 
     public static java.util.List<models.User> findByUsername(String username) {
         return find.where().like("username", "%"+username+"%").findList();
@@ -38,7 +38,7 @@ public class User extends Model {
     public static User getConnectedUser(play.mvc.Http.Session session) {
         User ret = null;
         if(session.containsKey("connected")) {
-            ret = User.find.byId(Integer.parseInt(session.get("connected")));
+            ret = User.find.byId(session.get("connected"));
             if(ret != null) {
                 ret.password = "You can fuck right off";
             }

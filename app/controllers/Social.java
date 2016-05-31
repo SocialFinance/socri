@@ -6,7 +6,7 @@ import views.html.*;
 
 import models.*;
 
-public class Index extends Controller {
+public class Social extends Controller {
 
     public static Result get() {
         User user = User.getConnectedUser(session());
