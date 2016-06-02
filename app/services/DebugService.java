@@ -1,11 +1,14 @@
 package services;
 
 import models.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import play.Play;
+
+import javax.inject.Inject;
 
 /**
  * Helper to populate the database with a default user.
@@ -14,17 +17,18 @@ import play.Play;
 @Component
 public class DebugService implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Autowired
-    private UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(DebugService.class);
+
+    @Inject private UserServiceDao userDao;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         String user = Play.application().configuration().getString("socri.debug.user.name");
-        if (userService.getByUsername(user) == null) {
+        if (userDao.findFirstByUsername(user) == null) {
             String password = Play.application().configuration().getString("socri.debug.user.password");
-            System.out.println("##############################################################################");
-            System.out.println("# DEBUG User " + user + ":" + password + " created!");
-            System.out.println("##############################################################################");
+            logger.info("##############################################################################");
+            logger.info("# DEBUG User " + user + ":" + password + " created!");
+            logger.info("##############################################################################");
 
             if (Play.application().configuration().getBoolean("socri.debug.user.create")) {
                 User u = new User();
@@ -33,7 +37,7 @@ public class DebugService implements ApplicationListener<ContextRefreshedEvent> 
                 u.setAlias("Debug user");
                 u.setSpecialties("Debugging, wasting time");
                 u.setWeaknesses("Fish tacos");
-                userService.saveUser(u);
+                userDao.save(u);
             }
         }
     }

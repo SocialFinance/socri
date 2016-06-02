@@ -6,24 +6,26 @@ import forms.UserSettingsForm;
 import models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.UserService;
+import services.UserServiceDao;
 import views.html.login;
 import views.html.settings;
 import views.html.signup;
+
+import javax.inject.Inject;
 
 @Controller
 public class UserController extends play.mvc.Controller {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
-    private UserService userService;
+    @Inject private UserServiceDao userDao;
+    @Inject private UserService userService;
 
     /* ***************************************
      *  API routes
@@ -32,13 +34,13 @@ public class UserController extends play.mvc.Controller {
     @Security.Authenticated(SecuredApi.class)
     public Result deleteUserAPI(Integer userId) {
 
-        if(!session().get("userid").equals(userId+"")) {
-            logger.error("User "+session().get("userid")+" tried to delete user "+userId+"!");
+        if (!session().get("userid").equals(userId + "")) {
+            logger.error("User " + session().get("userid") + " tried to delete user " + userId + "!");
             flash("error", "(╯°□°)╯︵ ┻━┻ YOU CAN'T HACK ME! I HACK YOU!");
             return badRequest("(╯°□°)╯︵ ┻━┻ YOU CAN'T HACK ME! I HACK YOU!");
         } else {
             try {
-                userService.deleteUser(userId);
+                userDao.delete(userId);
                 flash("info", "User deleted successfully");
                 session().clear();
                 return ok("User deleted");
@@ -52,7 +54,7 @@ public class UserController extends play.mvc.Controller {
     @Security.Authenticated(SecuredApi.class)
     public Result getUserAPI(Integer userId) {
         try {
-            return ok(Json.toJson(userService.getById(userId)));
+            return ok(Json.toJson(userDao.findOne(userId)));
         } catch (NullPointerException | NumberFormatException e) {
             return badRequest("{}");
         }
@@ -72,7 +74,7 @@ public class UserController extends play.mvc.Controller {
     }
 
     public Result doLogout() {
-        logger.info("User logged out: "+session().get("userid"));
+        logger.info("User logged out: " + session().get("userid"));
         session().clear();
         return redirect(routes.Index.index());
     }
@@ -81,23 +83,21 @@ public class UserController extends play.mvc.Controller {
         User user = null;
         Form<LoginForm> form = Form.form(LoginForm.class).bindFromRequest();
         if (!form.hasErrors()) {
-            user = userService.getByUsername(form.get().username);
+            user = userDao.findFirstByUsername(form.get().username);
             if (user == null) {
                 form.reject("username", "Nooooope");
-            } else {
-                if (!userService.checkPassword(user.getId(), form.get().password)) {
-                    form.reject("password", "Nope on a rope");
-                }
+            } else if (!user.getPassword().equals(form.get().password)) {
+                form.reject("password", "Nope on a rope");
             }
         }
         if (form.hasErrors()) {
-            logger.info("User login rejected for "+user.getUsername()+": "+form.errorsAsJson());
+            logger.info("User login rejected: " + form.errorsAsJson());
             flash("error", "Login error. Get that weak shit outta here.");
             return badRequest(login.render(form));
         }
 
         if (user != null) {
-            logger.info("User logged in: "+user.getId()+" ("+user.getUsername()+")");
+            logger.info("User logged in: " + user.getId() + " (" + user.getUsername() + ")");
             session("userid", "" + user.getId());
             return redirect(routes.Index.home());
         } else {
@@ -118,14 +118,14 @@ public class UserController extends play.mvc.Controller {
             return badRequest(signup.render(form));
         }
         User newUser = form.get();
-        if (userService.getByUsername(newUser.getUsername()) != null) {
+        if (userDao.findFirstByUsername(newUser.getUsername()) != null) {
             flash("error", "Pick a different username.");
             form.reject("username", "That username is taken.");
             return badRequest(signup.render(form));
         }
 
-        logger.info("New user created: "+newUser.getUsername());
-        userService.saveUser(newUser);
+        logger.info("New user created: " + newUser.getUsername());
+        userDao.save(newUser);
         flash("success", "Welcome aboard, " + newUser.getAlias() + ". Login to continue.");
         return redirect(routes.UserController.getLogin());
     }
@@ -133,7 +133,8 @@ public class UserController extends play.mvc.Controller {
     @Security.Authenticated(SecuredRoutes.class)
     public Result getSettings() {
         User u = userService.getConnected(session());
-        return ok(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u)), Form.form(UserPasswordForm.class)));
+        return ok(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u)),
+                                  Form.form(UserPasswordForm.class)));
     }
 
     @Security.Authenticated(SecuredRoutes.class)
@@ -142,7 +143,7 @@ public class UserController extends play.mvc.Controller {
         UserSettingsForm fu = form.get();
         User u = userService.getConnected(session());
         fu.populate(u);
-        userService.saveUser(u);
+        userDao.save(u);
         flash("success", "Settings updated successfully");
         return redirect(routes.UserController.getSettings());
     }
@@ -153,22 +154,23 @@ public class UserController extends play.mvc.Controller {
 
         Form<UserPasswordForm> form = Form.form(UserPasswordForm.class).bindFromRequest();
         UserPasswordForm fu = form.get();
-        if(!form.hasErrors()) {
-            if(!u.getPassword().equals(fu.oldPassword)) {
+        if (!form.hasErrors()) {
+            if (!u.getPassword().equals(fu.oldPassword)) {
                 form.reject("oldPassword", "That's not your old password. R-tard.");
-            } else if(fu.oldPassword.equals(fu.newPassword)) {
+            } else if (fu.oldPassword.equals(fu.newPassword)) {
                 form.reject("newPassword", "Old password = new password. Idiot.");
             }
         }
-        if(form.hasErrors()) {
+        if (form.hasErrors()) {
             flash("error", "Changing password failed. You did it wrong.");
             return badRequest(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u)), form));
         }
 
         u.setPassword(fu.newPassword);
-        userService.saveUser(u);
+        userDao.save(u);
 
         flash("success", "Password changed successfully");
         return redirect(routes.UserController.getSettings());
     }
+
 }
