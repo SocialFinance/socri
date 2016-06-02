@@ -8,6 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * User!
+ * This is the User. Users use the website.
+ */
 @Entity(name = "users")
 public class User {
 

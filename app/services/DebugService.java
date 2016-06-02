@@ -11,7 +11,7 @@ import play.Play;
 import javax.inject.Inject;
 
 /**
- * Helper to populate the database with a default user.
+ * Debug helper to populate the database with a default user.
  * Disable via application.conf (socri.debug)
  */
 @Component

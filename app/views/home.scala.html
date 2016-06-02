@@ -2,12 +2,12 @@
 
     @main("Boop", user) {
         @if(user == null) {
-            <h2>I should really put something here. You need to login or signup.</h2>
+            <h2 class="alert alert-warning">Something is wrong! You shouldn't be here! You need to log in first!</h2>
         } else {
-            <h1>Welcome, @user.getAlias(). Also, @user.getUsername()</h1>
+            <h1>Welcome, @user.getAlias()</h1>
         }
 
-        <div class="well">
-            Boop.
-        </div>
+        <p>There really should be some sweet stuff in here explaining how to get started with your SoCri tasks,
+            but I kind of got distracted building the user handling and looking at pictures of cats on the internet.
+            Eh. Whatever. Fuck it. Lets go get a beer?</p>
     }

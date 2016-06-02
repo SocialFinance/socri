@@ -6,6 +6,10 @@ import play.mvc.Security;
 
 import static play.mvc.Controller.flash;
 
+/**
+ * Ensures authenticated access to user-level routes.
+ * Ex: /home
+ */
 @org.springframework.stereotype.Controller
 public class SecuredRoutes extends Security.Authenticator {
 

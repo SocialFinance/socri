@@ -4,6 +4,10 @@ import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 
+/**
+ * Ensures authenticated access to API routes.
+ * EX: GET /api/users/:id
+ */
 @org.springframework.stereotype.Controller
 public class SecuredApi extends Security.Authenticator {
 

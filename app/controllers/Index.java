@@ -7,7 +7,11 @@ import play.mvc.Security;
 import services.UserService;
 import views.html.home;
 import views.html.index;
+import views.html.wip;
 
+/**
+ * Controls simple or catch-all routes: Index, Home, works in progress, etc
+ */
 @org.springframework.stereotype.Controller
 public class Index extends Controller {
 
@@ -21,6 +25,10 @@ public class Index extends Controller {
     @Security.Authenticated(SecuredRoutes.class)
     public Result home() {
         return ok(home.render(userService.getConnected(session())));
+    }
+
+    public Result wip() {
+        return ok(wip.render(userService.getConnected(session())));
     }
 
     public static Result goAway() {

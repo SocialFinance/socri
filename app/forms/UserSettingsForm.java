@@ -2,6 +2,9 @@ package forms;
 
 import models.User;
 
+/**
+ * Form. Used to change general user settings.
+ */
 public class UserSettingsForm {
 
     @play.data.validation.Constraints.Required
