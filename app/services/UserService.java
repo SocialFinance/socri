@@ -47,7 +47,7 @@ public class UserService {
 
     public User getByUsername(String name) {
         try {
-            TypedQuery<User> query = em.createQuery("SELECT c FROM users c WHERE c.username = :username", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM users u WHERE u.username = :username", User.class);
             return query.setParameter("username", name).getSingleResult();
         } catch (NoResultException e) {
             return null;

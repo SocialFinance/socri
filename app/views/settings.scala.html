@@ -1,11 +1,13 @@
 @import forms.UserSettingsForm
-@(user: User, updateForm: Form[UserSettingsForm])
+@import forms.UserPasswordForm
+@(user: User, updateForm: Form[UserSettingsForm], passwordForm: Form[UserPasswordForm])
 
 @implicitFieldConstructor = @{
     helper.FieldConstructor(twitterBootstrapInput.render)
 }
 
 @main("Boop", user) {
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/usercontrol.js")" ></script>
     @if(user == null) {
         <div class="alert alert-warning">
             <h1><i class="fa fa-wheelchair" aria-hidden="true"></i>
@@ -16,14 +18,31 @@
     } else {
         <h2>YEAAAAAAAAAAAAAAAA @user.getAlias.toUpperCase, LETS DO SOME SETTINGS!</h2>
         <div class="panel">
-
-            <h2>General Settings</h2>
             @helper.form(action = routes.UserController.saveSettings(), 'class -> "form-signup") {
+                <h2>General</h2>
                 @helper.inputText(updateForm("alias"), '_label -> "Alias", 'class -> "form-control")
                 @helper.inputText(updateForm("specialties"), '_label -> "Specialties", 'class -> "form-control")
                 @helper.inputText(updateForm("weaknesses"), '_label -> "Weaknesses", 'class -> "form-control")
                 <button class="btn btn-lg btn-primary" type="submit">Save</button>
             }
+        </div>
+        <div class="panel">
+            @helper.form(action = routes.UserController.changePassword(), 'class -> "form-signup") {
+                <h2>Change Password</h2>
+                @helper.inputPassword(passwordForm("oldPassword"), '_label -> "Old Password", 'class -> "form-control")
+                @helper.inputPassword(passwordForm("newPassword"), '_label -> "New Password", 'class -> "form-control")
+                <button class="btn btn-lg btn-primary" type="submit">Change Password</button>
+            }
+        </div>
+        <div class="panel">
+            <div class="form-signup">
+                <h2>Delete Account</h2>
+                <button id="deleteUser" class="btn btn-lg btn-warning" onclick="deleteUserInitial()">Delete</button>
+                <div id="confirmDelete" class="hidden">
+                    <button class="btn btn-lg btn-danger" onclick="deleteUserFoReal(@user.getId)">For real.</button>
+                    <button class="btn btn-lg btn-success" onclick="deleteUserCancel()">No! I changed my mind!</button>
+                </div>
+            </div>
         </div>
     }
 }

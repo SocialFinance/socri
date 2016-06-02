@@ -1,6 +1,7 @@
 package controllers;
 
 import forms.LoginForm;
+import forms.UserPasswordForm;
 import forms.UserSettingsForm;
 import models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +15,8 @@ import views.html.login;
 import views.html.settings;
 import views.html.signup;
 
-import static play.mvc.Controller.flash;
-import static play.mvc.Controller.session;
-import static play.mvc.Results.badRequest;
-import static play.mvc.Results.internalServerError;
-import static play.mvc.Results.notFound;
-import static play.mvc.Results.ok;
-import static play.mvc.Results.redirect;
-
 @Controller
-public class UserController {
+public class UserController extends play.mvc.Controller {
 
     @Autowired
     private UserService userService;
@@ -33,28 +26,29 @@ public class UserController {
      */
 
     @Security.Authenticated(SecuredApi.class)
-    public Result deleteUser(Integer userId) {
+    public Result deleteUserAPI(Integer userId) {
         try {
             userService.deleteUser(userId);
             flash("info", "User deleted successfully");
+            session().clear();
             return ok("User deleted");
         } catch (NullPointerException | NumberFormatException e) {
             flash("error", "Unable to delete user");
-            return notFound("Error: unable to delete user");
+            return badRequest("Error: unable to delete user");
         }
     }
 
     @Security.Authenticated(SecuredApi.class)
-    public Result getUser(Integer userId) {
+    public Result getUserAPI(Integer userId) {
         try {
             return ok(Json.toJson(userService.getById(userId)));
         } catch (NullPointerException | NumberFormatException e) {
-            return notFound("{}");
+            return badRequest("{}");
         }
     }
 
     @Security.Authenticated(SecuredApi.class)
-    public Result updateUser(Integer userId) {
+    public Result updateUserAPI(Integer userId) {
         return ok();
     }
 
@@ -125,7 +119,7 @@ public class UserController {
     @Security.Authenticated(SecuredRoutes.class)
     public Result getSettings() {
         User u = userService.getConnected(session());
-        return ok(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u))));
+        return ok(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u)), Form.form(UserPasswordForm.class)));
     }
 
     @Security.Authenticated(SecuredRoutes.class)
@@ -136,6 +130,31 @@ public class UserController {
         fu.populate(u);
         userService.saveUser(u);
         flash("success", "Settings updated successfully");
-        return ok(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u))));
+        return getSettings();
+    }
+
+    @Security.Authenticated(SecuredRoutes.class)
+    public Result changePassword() {
+        User u = userService.getConnected(session());
+
+        Form<UserPasswordForm> form = Form.form(UserPasswordForm.class).bindFromRequest();
+        UserPasswordForm fu = form.get();
+        if(!form.hasErrors()) {
+            if(!u.getPassword().equals(fu.oldPassword)) {
+                form.reject("oldPassword", "That's not your old password. R-tard.");
+            } else if(fu.oldPassword == fu.newPassword) {
+                form.reject("newPassword", "Old password = new password. Idiot.");
+            }
+        }
+        if(form.hasErrors()) {
+            flash("error", "Changing password failed. You did it wrong.");
+            return ok(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u)), form));
+        }
+
+        u.setPassword(fu.newPassword);
+        userService.saveUser(u);
+
+        flash("success", "Password changed successfully");
+        return getSettings();
     }
 }
