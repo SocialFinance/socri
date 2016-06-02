@@ -113,7 +113,7 @@ public class UserController extends play.mvc.Controller {
 
         userService.saveUser(newUser);
         flash("success", "Welcome aboard, " + newUser.getAlias() + ". Login to continue.");
-        return ok(login.render(Form.form(LoginForm.class)));
+        return redirect(routes.UserController.getLogin());
     }
 
     @Security.Authenticated(SecuredRoutes.class)
@@ -130,7 +130,7 @@ public class UserController extends play.mvc.Controller {
         fu.populate(u);
         userService.saveUser(u);
         flash("success", "Settings updated successfully");
-        return getSettings();
+        return redirect(routes.UserController.getSettings());
     }
 
     @Security.Authenticated(SecuredRoutes.class)
@@ -142,19 +142,19 @@ public class UserController extends play.mvc.Controller {
         if(!form.hasErrors()) {
             if(!u.getPassword().equals(fu.oldPassword)) {
                 form.reject("oldPassword", "That's not your old password. R-tard.");
-            } else if(fu.oldPassword == fu.newPassword) {
+            } else if(fu.oldPassword.equals(fu.newPassword)) {
                 form.reject("newPassword", "Old password = new password. Idiot.");
             }
         }
         if(form.hasErrors()) {
             flash("error", "Changing password failed. You did it wrong.");
-            return ok(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u)), form));
+            return badRequest(settings.render(u, Form.form(UserSettingsForm.class).fill(new UserSettingsForm(u)), form));
         }
 
         u.setPassword(fu.newPassword);
         userService.saveUser(u);
 
         flash("success", "Password changed successfully");
-        return getSettings();
+        return redirect(routes.UserController.getSettings());
     }
 }
