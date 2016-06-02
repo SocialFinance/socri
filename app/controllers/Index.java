@@ -27,6 +27,7 @@ public class Index extends Controller {
         return ok(home.render(userService.getConnected(session())));
     }
 
+    @Security.Authenticated(SecuredRoutes.class)
     public Result wip() {
         return ok(wip.render(userService.getConnected(session())));
     }

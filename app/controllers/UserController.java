@@ -19,6 +19,11 @@ import views.html.signup;
 
 import javax.inject.Inject;
 
+/**
+ * User pages and actions are handled here.
+ * Login, new user, all that stuff.
+ * User API routes are here also.
+ */
 @Controller
 public class UserController extends play.mvc.Controller {
 
@@ -28,7 +33,7 @@ public class UserController extends play.mvc.Controller {
     @Inject private UserService userService;
 
     /* ***************************************
-     *  API routes
+     *  API routes (JSON)
      * ***************************************/
 
     @Security.Authenticated(SecuredApi.class)
@@ -66,7 +71,7 @@ public class UserController extends play.mvc.Controller {
     }
 
     /* *****************************************
-     *  User content routes
+     *  User-land routes
      * ***************************************/
 
     public Result getLogin() {

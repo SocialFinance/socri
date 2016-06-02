@@ -15,10 +15,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.HashMap;
 
+/**
+ * Set up the Beans and data handling
+ */
 @Configuration
 @EnableJpaRepositories("services")
 @EnableTransactionManagement
 public class DataConfig {
+
     @SuppressWarnings("serial")
     @Bean
     public EntityManagerFactory entityManagerFactory() {

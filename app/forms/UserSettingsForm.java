@@ -15,16 +15,25 @@ public class UserSettingsForm {
 
     public String weaknesses;
 
-    public UserSettingsForm() {
+    /**
+     * Default constructor, needed for alt constructor
+     */
+    public UserSettingsForm() { }
 
-    }
-
+    /**
+     * Populate form from existing User
+     * @param u User
+     */
     public UserSettingsForm(User u) {
         this.alias = u.getAlias();
         this.specialties = u.getSpecialties();
         this.weaknesses = u.getWeaknesses();
     }
 
+    /**
+     * Copy user settings into a User
+     * @param u User
+     */
     public void populate(User u) {
         u.setAlias(alias);
         u.setSpecialties(specialties);
