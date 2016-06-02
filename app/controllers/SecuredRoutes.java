@@ -7,7 +7,7 @@ import play.mvc.Security;
 import static play.mvc.Controller.flash;
 
 @org.springframework.stereotype.Controller
-public class Secured extends Security.Authenticator {
+public class SecuredRoutes extends Security.Authenticator {
 
     @Override
     public String getUsername(Http.Context ctx) {
@@ -17,6 +17,6 @@ public class Secured extends Security.Authenticator {
     @Override
     public Result onUnauthorized(Http.Context ctx) {
         flash("error", "ლ(ಠ_ಠლ) Y U NO LOGIN?!");
-        return redirect(routes.Auth.login());
+        return redirect(routes.UserController.getLogin());
     }
 }

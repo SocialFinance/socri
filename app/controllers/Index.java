@@ -18,7 +18,7 @@ public class Index extends Controller {
         return ok(index.render(userService.getConnected(session())));
     }
 
-    @Security.Authenticated(Secured.class)
+    @Security.Authenticated(SecuredRoutes.class)
     public Result home() {
         return ok(home.render(userService.getConnected(session())));
     }

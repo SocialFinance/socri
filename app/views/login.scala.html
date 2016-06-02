@@ -6,7 +6,7 @@
 
     @main("Auth", null) {
         <div id="login" class="container">
-        @helper.form(action = routes.Auth.login(), 'class -> "form-signin") {
+        @helper.form(action = routes.UserController.doLogin(), 'class -> "form-signin") {
 
             <h2 class="form-signin-heading">Who dis?</h2>
 

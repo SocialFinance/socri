@@ -13,13 +13,13 @@ public class Lending extends Controller {
     @Autowired
     private UserService userService;
 
-    @Security.Authenticated(Secured.class)
+    @Security.Authenticated(SecuredRoutes.class)
     public Result get() {
         //TODO
         return ok(home.render(userService.getConnected(session())));
     }
 
-    @Security.Authenticated(Secured.class)
+    @Security.Authenticated(SecuredRoutes.class)
     public Result getLoans() {
         //TODO
         return ok(home.render(userService.getConnected(session())));

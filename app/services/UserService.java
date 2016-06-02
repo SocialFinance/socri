@@ -1,7 +1,7 @@
 package services;
 
 import models.User;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import play.mvc.Http;
 
@@ -10,7 +10,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-@Service
+@Repository
 public class UserService {
 
     @PersistenceContext
@@ -25,7 +25,12 @@ public class UserService {
 
     @Transactional
     public void saveUser(User user) {
-        em.persist(user);
+        em.merge(user);
+    }
+
+    @Transactional
+    public void deleteUser(int id) {
+        em.remove(getById(id));
     }
 
     public User getConnected(Http.Session session) {
@@ -37,30 +42,10 @@ public class UserService {
     }
 
     public User getById(int id) {
-        User u = em.find(User.class, id);
-        if (u != null) {
-            u.setPassword("You can fuck right off");
-        }
-        return u;
+        return em.find(User.class, id);
     }
 
     public User getByUsername(String name) {
-
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//        CriteriaQuery<User> q = cb.createQuery(User.class);
-//        Root<User> c = q.from(User.class);
-//        ParameterExpression<String> p = cb.parameter(String.class);
-//        q.select(c).where(cb.equal(c.get("username"), p));
-//
-//        TypedQuery<User> tq = em.createQuery(q);
-//        tq.setParameter(p, name);
-//        try {
-//            return tq.getSingleResult();
-//        } catch (NoResultException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-
         try {
             TypedQuery<User> query = em.createQuery("SELECT c FROM users c WHERE c.username = :username", User.class);
             return query.setParameter("username", name).getSingleResult();

@@ -15,6 +15,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-left">
                 @if(user != null) {
+                    <li><a href="@routes.Index.home()">Home</a></li>
                     <li><a href="@routes.Jobs.get()">Jobs</a></li>
                     <li><a href="@routes.Lending.get()">Lending</a></li>
                     <li><a href="@routes.Social.get()">Social</a></li>
@@ -22,10 +23,11 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
             @if(user == null) {
-                <li><a href="@routes.Signup.get()">Signup</a></li>
-                <li><a href="@routes.Auth.get()">Login</a></li>
+                <li><a href="@routes.UserController.getSignup()">Signup</a></li>
+                <li><a href="@routes.UserController.getLogin()">Login</a></li>
             } else {
-                <li><a href="@routes.Auth.logout()">Logout</a></li>
+                <li><a href="@routes.UserController.getSettings()"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                <li><a href="@routes.UserController.doLogout()">Logout</a></li>
             }
             </ul>
         </div>

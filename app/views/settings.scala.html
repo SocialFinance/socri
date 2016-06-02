@@ -1,0 +1,29 @@
+@import forms.UserSettingsForm
+@(user: User, updateForm: Form[UserSettingsForm])
+
+@implicitFieldConstructor = @{
+    helper.FieldConstructor(twitterBootstrapInput.render)
+}
+
+@main("Boop", user) {
+    @if(user == null) {
+        <div class="alert alert-warning">
+            <h1><i class="fa fa-wheelchair" aria-hidden="true"></i>
+                OW! Something really broke here. <i class="fa fa-wheelchair" aria-hidden="true"></i></h1>
+            <p>Restart your router. Reboot your computer. If that doesn't work, try reformatting your computer.</p>
+            <p>Shit man, I dunno. Stop bothering me.</p>
+        </div>
+    } else {
+        <h2>YEAAAAAAAAAAAAAAAA @user.getAlias.toUpperCase, LETS DO SOME SETTINGS!</h2>
+        <div class="panel">
+
+            <h2>General Settings</h2>
+            @helper.form(action = routes.UserController.saveSettings(), 'class -> "form-signup") {
+                @helper.inputText(updateForm("alias"), '_label -> "Alias", 'class -> "form-control")
+                @helper.inputText(updateForm("specialties"), '_label -> "Specialties", 'class -> "form-control")
+                @helper.inputText(updateForm("weaknesses"), '_label -> "Weaknesses", 'class -> "form-control")
+                <button class="btn btn-lg btn-primary" type="submit">Save</button>
+            }
+        </div>
+    }
+}

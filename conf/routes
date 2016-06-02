@@ -2,21 +2,34 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
+# ######################################################################
+# User-level routes
+# ######################################################################
+
+# Index/Home/Main
 GET     /                           @controllers.Index.index()
 GET     /home                       @controllers.Index.home()
 
-GET     /login                      @controllers.Auth.get()
-POST    /login                      @controllers.Auth.login()
-GET     /logout                     @controllers.Auth.logout()
-POST    /logout                     @controllers.Auth.logout()
-
-GET     /signup                     @controllers.Signup.get()
-POST    /signup                     @controllers.Signup.post()
+# User
+GET     /login                      @controllers.UserController.getLogin()
+POST    /login                      @controllers.UserController.doLogin()
+GET     /logout                     @controllers.UserController.doLogout()
+POST    /logout                     @controllers.UserController.doLogout()
+GET     /signup                     @controllers.UserController.getSignup()
+POST    /signup                     @controllers.UserController.doSignup()
+GET     /settings                   @controllers.UserController.getSettings()
+POST    /settings                   @controllers.UserController.saveSettings()
 
 GET     /jobs                       @controllers.Jobs.get()
 GET     /lending                    @controllers.Lending.get()
 GET     /social                     @controllers.Social.get()
+
+# ######################################################################
+# API routes
+# ######################################################################
+GET     /api/user/:id                   @controllers.UserController.getUser(id: Integer)
+POST    /api/user/:id                   @controllers.UserController.updateUser(id: Integer)
+DELETE  /api/user/:id                   @controllers.UserController.deleteUser(id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

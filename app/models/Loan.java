@@ -3,6 +3,7 @@ package models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "loans")
@@ -10,16 +11,16 @@ public class Loan {
 
     @Id
     @Column
-    @GeneratedValue
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "user_id")
     @play.data.validation.Constraints.Required
-    private String userId;
+    private int userId;
 
     @Column(name = "backer_id")
     @play.data.validation.Constraints.Required
-    private String backerId;
+    private int backerId;
 
     @Column
     @play.data.validation.Constraints.Required
@@ -45,27 +46,27 @@ public class Loan {
     @play.data.validation.Constraints.Required
     private double originalAmount;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public String getBackerId() {
+    public int getBackerId() {
         return backerId;
     }
 
-    public void setBackerId(String backerId) {
+    public void setBackerId(int backerId) {
         this.backerId = backerId;
     }
 

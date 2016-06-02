@@ -5,7 +5,7 @@
 
     @main("Signup", null) {
         <div class="container">
-        @helper.form(action = routes.Signup.post(), 'class -> "form-signup") {
+        @helper.form(action = routes.UserController.doSignup(), 'class -> "form-signup") {
             <h2 class="form-signin-heading">New Account <small>no welchers!</small></h2>
             @helper.inputText(signupForm("username"), '_label -> "Username", 'class -> "form-control")
             @helper.inputPassword(signupForm("password"), '_label -> "Password", 'class -> "form-control")
