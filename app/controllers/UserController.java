@@ -45,6 +45,7 @@ public class UserController extends play.mvc.Controller {
         } else {
             try {
                 userDao.delete(userId);
+                logger.info("User deleted successfully");
                 flash("info", "User deleted successfully");
                 session().clear();
                 return ok("User deleted");
@@ -60,7 +61,7 @@ public class UserController extends play.mvc.Controller {
         try {
             return ok(Json.toJson(userDao.findOne(userId)));
         } catch (NullPointerException | NumberFormatException e) {
-            return badRequest("{}");
+            return notFound("{}");
         }
     }
 

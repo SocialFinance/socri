@@ -25,3 +25,8 @@ sbt clean compile
 ```bash
 sbt ~run
 ```
+
+### Tests
+```bash
+sbt test
+```

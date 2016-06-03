@@ -16,6 +16,8 @@ import static integration.Util.getLogin;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static play.mvc.Http.Status.BAD_REQUEST;
+import static play.mvc.Http.Status.NOT_FOUND;
 import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.HTMLUNIT;
 import static play.test.Helpers.contentAsString;
@@ -76,6 +78,14 @@ public class UserIntegration extends play.test.WithApplication {
                 r = route(fakeRequest);
                 assertTrue("User API GET2 response", status(r) == OK);
                 assertTrue("User API GET2 content", contentAsString(r).contains("mac the knife"));
+
+                fakeRequest = new FakeRequest("DELETE", "/api/user/1").withSession("userid", "1");
+                r = route(fakeRequest);
+                assertTrue("User API DELETE response", status(r) == OK);
+
+                fakeRequest = new FakeRequest("GET", "/api/user/1").withSession("userid", "1");
+                r = route(fakeRequest);
+                assertTrue("User API GET3 response", status(r) == NOT_FOUND);
             }
         });
     }
