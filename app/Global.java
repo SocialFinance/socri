@@ -1,12 +1,11 @@
-package config;
-
+import config.AppConfig;
+import config.DataConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import play.Application;
 import play.GlobalSettings;
-import play.Play;
 import play.libs.F;
 import play.mvc.Http;
 
@@ -15,9 +14,9 @@ import play.mvc.Http;
  * Fires off AppConfig and DataConfig
  * Handles unmatched routes
  */
-public class GlobalConfig extends GlobalSettings {
+public class Global extends GlobalSettings {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(Global.class);
     private ApplicationContext context;
 
     @Override

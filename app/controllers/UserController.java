@@ -6,6 +6,7 @@ import forms.UserSettingsForm;
 import models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import play.data.Form;
 import play.libs.Json;
@@ -17,8 +18,6 @@ import views.html.login;
 import views.html.settings;
 import views.html.signup;
 
-import javax.inject.Inject;
-
 /**
  * User pages and actions are handled here.
  * Login, new user, all that stuff.
@@ -29,8 +28,8 @@ public class UserController extends play.mvc.Controller {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Inject private UserServiceDao userDao;
-    @Inject private UserService userService;
+    @Autowired private UserServiceDao userDao;
+    @Autowired private UserService userService;
 
     /* ***************************************
      *  API routes (JSON)
@@ -67,7 +66,8 @@ public class UserController extends play.mvc.Controller {
 
     @Security.Authenticated(SecuredApi.class)
     public Result updateUserAPI(Integer userId) {
-        return ok();
+        User u = Json.fromJson(request().body().asJson(), User.class);
+        return ok(Json.toJson(userDao.save(u)));
     }
 
     /* *****************************************

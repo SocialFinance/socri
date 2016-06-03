@@ -1,18 +1,18 @@
 @(signupForm: Form[User])
-@implicitFieldConstructor = @{
-    helper.FieldConstructor(twitterBootstrapInput.render)
-}
-
-@main("Signup", null) {
-    <div class="container">
-    @helper.form(action = routes.UserController.doSignup(), 'class -> "form-signup") {
-        <h2 class="form-signin-heading">New Account <small>no welchers!</small></h2>
-        @helper.inputText(signupForm("username"), '_label -> "Username", 'class -> "form-control")
-        @helper.inputPassword(signupForm("password"), '_label -> "Password", 'class -> "form-control")
-        @helper.inputText(signupForm("alias"), '_label -> "Alias", 'class -> "form-control")
-        @helper.inputText(signupForm("specialties"), '_label -> "Specialties", 'class -> "form-control")
-        @helper.inputText(signupForm("weaknesses"), '_label -> "Weaknesses", 'class -> "form-control")
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Signup</button>
+    @implicitFieldConstructor = @{
+        helper.FieldConstructor(twitterBootstrapInput.render)
     }
-    </div>
-}
+
+    @main("Signup", null) {
+        <div class="container">
+        @helper.form(action = routes.UserController.doSignup(), 'class -> "form-signup") {
+            <h2 class="form-signin-heading">New Account <small>no welchers!</small></h2>
+            @helper.inputText(signupForm("username"), '_label -> "Username", 'class -> "form-control")
+            @helper.inputPassword(signupForm("password"), '_label -> "Password", 'class -> "form-control")
+            @helper.inputText(signupForm("alias"), '_label -> "Alias", 'class -> "form-control")
+            @helper.inputText(signupForm("specialties"), '_label -> "Specialties", 'class -> "form-control")
+            @helper.inputText(signupForm("weaknesses"), '_label -> "Weaknesses", 'class -> "form-control")
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Signup</button>
+        }
+        </div>
+    }

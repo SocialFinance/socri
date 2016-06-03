@@ -10,4 +10,5 @@ public interface UserServiceDao extends CrudRepository<User, Integer> {
 
     User findFirstByUsername(String username);
 
+    User findFirstByAlias(String alias);
 }
