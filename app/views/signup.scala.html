@@ -1,4 +1,5 @@
-@(signupForm: Form[User])
+@import forms.UserForm
+@(signupForm: Form[UserForm])
     @implicitFieldConstructor = @{
         helper.FieldConstructor(twitterBootstrapInput.render)
     }

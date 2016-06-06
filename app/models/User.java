@@ -1,5 +1,8 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import forms.UserForm;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,19 +21,16 @@ public class User {
     private int id;
 
     @Column(unique = true)
-    @play.data.validation.Constraints.Required
     private String username;
 
     @Column
-    @play.data.validation.Constraints.Required
+    @JsonIgnore
     private String password;
 
     @Column
-    @play.data.validation.Constraints.Required
     private String alias;
 
     @Column
-    @play.data.validation.Constraints.Required
     private String specialties;
 
     @Column
@@ -82,5 +82,15 @@ public class User {
 
     public void setWeaknesses(String weaknesses) {
         this.weaknesses = weaknesses;
+    }
+
+    public static User fromForm(UserForm newUser) {
+        User u = new User();
+        u.setUsername(newUser.username);
+        u.setPassword(newUser.password);
+        u.setSpecialties(newUser.specialties);
+        u.setWeaknesses(newUser.weaknesses);
+        u.setAlias(newUser.alias);
+        return u;
     }
 }

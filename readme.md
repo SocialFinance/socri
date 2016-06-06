@@ -30,3 +30,9 @@ sbt ~run
 ```bash
 sbt test
 ```
+
+## Known Issues
+### Passwords
+Passwords are stored in plaintext everywhere!
+There is no SSL, and the database does not encrypt them either.
+Buyer beware...

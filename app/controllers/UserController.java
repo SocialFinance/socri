@@ -1,6 +1,7 @@
 package controllers;
 
 import forms.LoginForm;
+import forms.UserForm;
 import forms.UserPasswordForm;
 import forms.UserSettingsForm;
 import models.User;
@@ -114,25 +115,26 @@ public class UserController extends play.mvc.Controller {
     }
 
     public Result getSignup() {
-        return ok(signup.render(Form.form(models.User.class)));
+        return ok(signup.render(Form.form(forms.UserForm.class)));
     }
 
     public Result doSignup() {
-        Form<models.User> form = Form.form(models.User.class).bindFromRequest();
+        Form<forms.UserForm> form = Form.form(forms.UserForm.class).bindFromRequest();
         if (form.hasErrors()) {
             flash("error", "Try that again, dipshit.");
             return badRequest(signup.render(form));
         }
-        User newUser = form.get();
-        if (userDao.findFirstByUsername(newUser.getUsername()) != null) {
+        UserForm newUser = form.get();
+        User u = User.fromForm(newUser);
+        if (userDao.findFirstByUsername(u.getUsername()) != null) {
             flash("error", "Pick a different username.");
             form.reject("username", "That username is taken.");
             return badRequest(signup.render(form));
         }
 
-        logger.info("New user created: " + newUser.getUsername());
-        userDao.save(newUser);
-        flash("success", "Welcome aboard, " + newUser.getAlias() + ". Login to continue.");
+        logger.info("New user created: " + u.getUsername());
+        userDao.save(u);
+        flash("success", "Welcome aboard, " + u.getAlias() + ". Login to continue.");
         return redirect(routes.UserController.getLogin());
     }
 
